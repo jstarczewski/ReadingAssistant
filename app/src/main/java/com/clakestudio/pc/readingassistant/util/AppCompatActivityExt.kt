@@ -8,6 +8,8 @@ import android.support.v4.app.FragmentManager
 import android.support.v4.app.FragmentTransaction
 import android.support.v7.app.ActionBar
 import android.support.v7.app.AppCompatActivity
+import com.clakestudio.pc.readingassistant.ViewModelFactory
+
 //import com.clakestudio.pc.readingassistant.ViewModelFactory
 
 
@@ -37,10 +39,10 @@ fun AppCompatActivity.setupActionBar(@IdRes toolbarId: Int, action: ActionBar.()
         action()
     }
 }
-/*
+
 fun <T : ViewModel> AppCompatActivity.obtainViewModel(viewModelClass: Class<T>) =
         ViewModelProviders.of(this, ViewModelFactory.getInstance(application)).get(viewModelClass)
-*/
+
 /**
  * Runs a FragmentTransaction, then calls commit().
  */
