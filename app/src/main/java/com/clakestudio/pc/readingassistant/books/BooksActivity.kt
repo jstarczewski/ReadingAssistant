@@ -28,4 +28,9 @@ class BooksActivity : AppCompatActivity() {
     }
 
     fun obtainViewModel() : BooksViewModel  = obtainViewModel(BooksViewModel::class.java)
+
+
+    /*
+    * TODO -> DATABASE and whole data package
+    * */
 }
