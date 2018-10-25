@@ -11,7 +11,7 @@ import io.reactivex.Flowable
 
 
     @Query("SELECT * FROM Books")
-    fun getBooks() : Flowable<Book>
+    fun getBooks() : Flowable<List<Book>>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertBook(book: Book)
