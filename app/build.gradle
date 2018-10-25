@@ -57,7 +57,6 @@ dependencies {
     androidTestImplementation "com.android.support.test:runner:$rootProject.ext.runnerVersion"
     androidTestImplementation "com.android.support.test:rules:$rootProject.ext.rulesVersion"
 
-
     // Dependencies for Android unit tests
     androidTestCompile "junit:junit:$rootProject.ext.junitVersion"
     androidTestCompile "org.mockito:mockito-android:$rootProject.ext.mockitoVersion"
@@ -81,5 +80,8 @@ dependencies {
     implementation "com.google.code.findbugs:jsr305:2.0.1"
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jre7:$kotlinVersion"
     kapt "com.android.databinding:compiler:$gradlePluginVersion"
+
+    implementation 'io.reactivex.rxjava2:rxandroid:2.0.2'
+    implementation 'io.reactivex.rxjava2:rxjava:2.1.10'
 
 }
