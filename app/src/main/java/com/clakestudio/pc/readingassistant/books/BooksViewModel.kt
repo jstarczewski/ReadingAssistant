@@ -4,6 +4,10 @@ import android.app.Application
 import android.arch.lifecycle.AndroidViewModel
 import android.content.Context
 import android.databinding.ObservableField
+import com.clakestudio.pc.readingassistant.data.Book
+import com.clakestudio.pc.readingassistant.data.source.BooksRepository
+import com.clakestudio.pc.readingassistant.data.source.local.BooksLocalDataSource
+import com.clakestudio.pc.readingassistant.data.source.local.LibraryDatabase
 
 class BooksViewModel(
         context: Application
@@ -14,6 +18,11 @@ class BooksViewModel(
 
 
     fun start() {
-        infoLabel.set("Elooooo")
+
+        var booksdb = LibraryDatabase.getInstance(context)
+        var booksRepository = BooksRepository.getInstance(BooksLocalDataSource.getInstance(booksdb.booksDao()))
+        booksRepository.saveBook(Book("elo", "twojastara", "je", "12"))
+
+        infoLabel.set(booksRepository.getBooks().toString())
     }
 }

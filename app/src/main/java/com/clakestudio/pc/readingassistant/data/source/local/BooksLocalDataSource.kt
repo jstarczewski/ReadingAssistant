@@ -18,15 +18,15 @@ class BooksLocalDataSource(val booksDao: BooksDao) : BooksDataSource {
         val disposable = booksDao.getBooks()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe({
-                    booksList -> books = transform(booksList)
-                }, {t: Throwable? -> t?.printStackTrace() })
+                .subscribe({ booksList ->
+                    books = transform(booksList)
+                }, { t: Throwable? -> t?.printStackTrace() })
         allCompositeDisposable.add(disposable)
         return books
 
     }
 
-    private fun transform(books : List<Book>) : ArrayList<Book> {
+    private fun transform(books: List<Book>): ArrayList<Book> {
         val booksList: ArrayList<Book> = ArrayList<Book>()
         books.forEach {
             booksList.add(Book(it.title, it.author, it.note, it.id))
@@ -36,11 +36,24 @@ class BooksLocalDataSource(val booksDao: BooksDao) : BooksDataSource {
 
     override fun saveBook(book: Book) {
 
-        Flowable.fromCallable{ booksDao.insertBook(book)}
+        Flowable.fromCallable { booksDao.insertBook(book) }
                 .subscribeOn(Schedulers.io())
                 .observeOn(Schedulers.io())
                 .subscribe()
     }
 
+    companion object {
+        private var INSTANCE: BooksLocalDataSource? = null
 
+        @JvmStatic
+        fun getInstance(booksDao: BooksDao): BooksLocalDataSource {
+            if (INSTANCE == null) {
+                synchronized(BooksLocalDataSource::javaClass) {
+                    INSTANCE = BooksLocalDataSource(booksDao)
+                }
+            }
+            return INSTANCE!!
+        }
+
+    }
 }
