@@ -19,7 +19,7 @@ class BooksLocalDataSource(val booksDao: BooksDao) : BooksDataSource {
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe({ booksList ->
-                    books = transform(booksList)
+                    books = (booksList as MutableList<Book>)
                 }, { t: Throwable? -> t?.printStackTrace() })
         allCompositeDisposable.add(disposable)
         return books
