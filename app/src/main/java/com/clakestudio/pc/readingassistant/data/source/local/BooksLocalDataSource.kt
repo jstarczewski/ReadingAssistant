@@ -3,11 +3,8 @@ package com.clakestudio.pc.readingassistant.data.source.local
 import com.clakestudio.pc.readingassistant.data.Book
 import com.clakestudio.pc.readingassistant.data.source.BooksDataSource
 import com.clakestudio.pc.readingassistant.util.DisposableManager
-import com.clakestudio.pc.readingassistant.util.Dispose
 import io.reactivex.Flowable
 import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.disposables.CompositeDisposable
-import io.reactivex.disposables.Disposable
 import io.reactivex.schedulers.Schedulers
 
 class BooksLocalDataSource(private val booksDao: BooksDao) : BooksDataSource {
@@ -34,10 +31,12 @@ allCompositeDisposable.add(books)
 }
 */
     override fun saveBook(book: Book) {
-        Flowable.fromCallable { booksDao.insertBook(book) }
-                .subscribeOn(Schedulers.io())
-                .observeOn(Schedulers.io())
-                .subscribe()
+        disposableManager.addDisposable(
+                Flowable.fromCallable { booksDao.insertBook(book) }
+                        .subscribeOn(Schedulers.io())
+                        .observeOn(Schedulers.io())
+                        .subscribe()
+        )
     }
 
     companion object {

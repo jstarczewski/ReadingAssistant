@@ -1,15 +1,11 @@
 package com.clakestudio.pc.readingassistant.data.source
 
 import com.clakestudio.pc.readingassistant.data.Book
-import com.clakestudio.pc.readingassistant.util.Dispose
-import io.reactivex.disposables.Disposable
 
 class BooksRepository(private val booksLocalDataSource: BooksDataSource) : BooksDataSource {
 
     var cachedBooks: ArrayList<Book> = arrayListOf()
     var cacheIsDirty = false
-    var allDisposable: MutableList<Disposable> = arrayListOf()
-
 
     /**
      * 1. If cachedBooks are not empty && are not dirty we just return them

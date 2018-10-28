@@ -5,14 +5,22 @@ import io.reactivex.disposables.Disposable
 
 class DisposableManager {
 
+    /**
+     * Could not find any idea how to keep track of disposables, and easily clear them
+     * so I created simple DisposableManager to easily clear them all when needed
+     * --------------------------------------------------------------------------------
+     *
+     * I do not know whether it is a good approach to a problem, needs some more research
+     *
+     * */
 
     private var allDisposables: CompositeDisposable = CompositeDisposable()
 
-    public fun addDisposable(disposable: Disposable) {
+    fun addDisposable(disposable: Disposable) {
         allDisposables.add(disposable)
     }
 
-    public fun clearDisposables() {
+    fun clearDisposables() {
         allDisposables.clear()
     }
 
