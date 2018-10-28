@@ -2,13 +2,15 @@ package com.clakestudio.pc.readingassistant.books
 
 import android.app.Application
 import android.arch.lifecycle.AndroidViewModel
+import android.arch.lifecycle.Lifecycle
+import android.arch.lifecycle.OnLifecycleEvent
 import android.content.Context
 import android.databinding.ObservableField
 import com.clakestudio.pc.readingassistant.data.Book
 import com.clakestudio.pc.readingassistant.data.source.BooksRepository
 import com.clakestudio.pc.readingassistant.data.source.local.BooksLocalDataSource
 import com.clakestudio.pc.readingassistant.data.source.local.LibraryDatabase
-import io.reactivex.disposables.CompositeDisposable
+import com.clakestudio.pc.readingassistant.util.DisposableManager
 
 class BooksViewModel(
         context: Application
@@ -27,4 +29,10 @@ class BooksViewModel(
         infoLabel.set(booksRepository.getBooks().toString())
 
     }
+
+    @OnLifecycleEvent(Lifecycle.Event.ON_DESTROY)
+    fun unsubscribeViewModel() {
+        DisposableManager.getInstance().clearDisposables()
+    }
+
 }

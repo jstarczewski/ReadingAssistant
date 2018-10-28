@@ -2,6 +2,7 @@ package com.clakestudio.pc.readingassistant.data.source.local
 
 import com.clakestudio.pc.readingassistant.data.Book
 import com.clakestudio.pc.readingassistant.data.source.BooksDataSource
+import com.clakestudio.pc.readingassistant.util.DisposableManager
 import com.clakestudio.pc.readingassistant.util.Dispose
 import io.reactivex.Flowable
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -9,9 +10,10 @@ import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.disposables.Disposable
 import io.reactivex.schedulers.Schedulers
 
-class BooksLocalDataSource(private val booksDao: BooksDao) : BooksDataSource, Dispose {
+class BooksLocalDataSource(private val booksDao: BooksDao) : BooksDataSource {
 
-    private val allDisposable: CompositeDisposable = CompositeDisposable()
+    // makes testing harder
+    val disposableManager: DisposableManager = DisposableManager.getInstance()
 
     override fun getBooks(): List<Book> {
 
@@ -21,7 +23,7 @@ class BooksLocalDataSource(private val booksDao: BooksDao) : BooksDataSource, Di
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe({ list -> books = list }, { t: Throwable? -> t?.printStackTrace() })
-        addDisposable(booksDisposable)
+        disposableManager.addDisposable(booksDisposable)
         return books
     }
 
@@ -51,14 +53,6 @@ allCompositeDisposable.add(books)
             return INSTANCE!!
         }
 
-    }
-
-    override fun addDisposable(disposable: Disposable) {
-        allDisposable.add(disposable)
-    }
-
-    override fun clearDisposable() {
-        allDisposable.clear()
     }
 
 

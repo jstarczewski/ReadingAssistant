@@ -1,34 +1,46 @@
 package com.clakestudio.pc.readingassistant.data.source
 
 import com.clakestudio.pc.readingassistant.data.Book
-import com.clakestudio.pc.readingassistant.data.source.local.BooksLocalDataSource
 import com.clakestudio.pc.readingassistant.util.Dispose
-import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.disposables.Disposable
 
-class BooksRepository(private val booksLocalDataSource: BooksDataSource) : BooksDataSource, Dispose {
+class BooksRepository(private val booksLocalDataSource: BooksDataSource) : BooksDataSource {
 
-    var cachedBooks: List<Book> = ArrayList()
+    var cachedBooks: ArrayList<Book> = arrayListOf()
     var cacheIsDirty = false
     var allDisposable: MutableList<Disposable> = arrayListOf()
 
-    override fun getBooks(): List<Book> {
 
+    /**
+     * 1. If cachedBooks are not empty && are not dirty we just return them
+     * 2. If cache is dirty because of operations that were performed and we can not skip the process of getting
+     * the data from database we load data from local database (because right now there is no remote database)
+     * and return cachedBooks
+     * 3. if cachedBooks are empty we just load them from database
+     * */
+
+
+    // TODO("check whether it is better for loadBooks to return value or not")
+
+    override fun getBooks(): List<Book> {
+        if (cachedBooks.isNotEmpty() && !cacheIsDirty) {
+            return cachedBooks
+        }
+        if (cacheIsDirty || cachedBooks.isEmpty())
+            loadBooks()
+        return cachedBooks
     }
 
 
     override fun saveBook(book: Book) {
+        cachedBooks.add(book)
         booksLocalDataSource.saveBook(book)
     }
 
-    override fun addDisposable(disposable: Disposable) {
-
+    private fun loadBooks() {
+        cacheIsDirty = false
+        cachedBooks = booksLocalDataSource.getBooks() as ArrayList<Book>
     }
-
-    override fun clearDisposable() {
-
-    }
-
 
     companion object {
 
