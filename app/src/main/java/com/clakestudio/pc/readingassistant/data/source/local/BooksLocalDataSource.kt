@@ -2,50 +2,36 @@ package com.clakestudio.pc.readingassistant.data.source.local
 
 import com.clakestudio.pc.readingassistant.data.Book
 import com.clakestudio.pc.readingassistant.data.source.BooksDataSource
+import com.clakestudio.pc.readingassistant.util.Dispose
 import io.reactivex.Flowable
 import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.disposables.Disposable
 import io.reactivex.schedulers.Schedulers
 
-class BooksLocalDataSource(val booksDao: BooksDao) : BooksDataSource {
+class BooksLocalDataSource(private val booksDao: BooksDao) : BooksDataSource, Dispose {
 
-    var cachedBooks: List<Book> = arrayListOf()
-    val allCompositeDisposable: MutableList<Disposable> = arrayListOf()
-
+    private val allDisposable: CompositeDisposable = CompositeDisposable()
 
     override fun getBooks(): List<Book> {
 
-        /*
-        var books: MutableList<Book> = ArrayList<Book>()
-        val disposable = booksDao.getBooks()
+        var books: List<Book> = ArrayList()
+
+        val booksDisposable = booksDao.getBooks()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe({ booksList ->
-                    books = (booksList as MutableList<Book>)
-                }, { t: Throwable? -> t?.printStackTrace() })
-        allCompositeDisposable.add(disposable)
-        return books*/
-
-
-        val books = booksDao.getBooks()
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe({ books -> cachedBooks = books }, {t: Throwable? -> t?.printStackTrace()})
-        allCompositeDisposable.add(books)
-
-        return cachedBooks
+                .subscribe({ list -> books = list }, { t: Throwable? -> t?.printStackTrace() })
+        addDisposable(booksDisposable)
+        return books
     }
 
-    private fun transform(books: List<Book>): ArrayList<Book> {
-        val booksList: ArrayList<Book> = ArrayList<Book>()
-        books.forEach {
-            booksList.add(Book(it.title, it.author, it.note, it.id))
-        }
-        return booksList
-    }
+    /*
+    .subscribe({ books -> cachedBooks = books }, {t: Throwable? -> t?.printStackTrace()})
+allCompositeDisposable.add(books)
 
+}
+*/
     override fun saveBook(book: Book) {
-
         Flowable.fromCallable { booksDao.insertBook(book) }
                 .subscribeOn(Schedulers.io())
                 .observeOn(Schedulers.io())
@@ -66,4 +52,14 @@ class BooksLocalDataSource(val booksDao: BooksDao) : BooksDataSource {
         }
 
     }
+
+    override fun addDisposable(disposable: Disposable) {
+        allDisposable.add(disposable)
+    }
+
+    override fun clearDisposable() {
+        allDisposable.clear()
+    }
+
+
 }

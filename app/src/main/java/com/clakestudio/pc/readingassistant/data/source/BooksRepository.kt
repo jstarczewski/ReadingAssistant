@@ -1,44 +1,48 @@
 package com.clakestudio.pc.readingassistant.data.source
 
 import com.clakestudio.pc.readingassistant.data.Book
-import io.reactivex.Flowable
+import com.clakestudio.pc.readingassistant.data.source.local.BooksLocalDataSource
+import com.clakestudio.pc.readingassistant.util.Dispose
+import io.reactivex.disposables.CompositeDisposable
+import io.reactivex.disposables.Disposable
 
-class BooksRepository(val booksLocalDataSource: BooksDataSource) : BooksDataSource {
+class BooksRepository(private val booksLocalDataSource: BooksDataSource) : BooksDataSource, Dispose {
 
+    var cachedBooks: List<Book> = ArrayList()
+    var cacheIsDirty = false
+    var allDisposable: MutableList<Disposable> = arrayListOf()
 
     override fun getBooks(): List<Book> {
-        return booksLocalDataSource.getBooks()
+
     }
+
 
     override fun saveBook(book: Book) {
         booksLocalDataSource.saveBook(book)
     }
 
-        companion object {
+    override fun addDisposable(disposable: Disposable) {
+
+    }
+
+    override fun clearDisposable() {
+
+    }
+
+
+    companion object {
 
         private var INSTANCE: BooksRepository? = null
 
-        /**
-         * Returns the single instance of this class, creating it if necessary.
-
-         * @param tasksRemoteDataSource the backend data source
-         * *
-         * @param tasksLocalDataSource  the device storage data source
-         * *
-         * @return the [BooksRepository] instance
-         */
-        @JvmStatic fun getInstance(booksLocalDataSource: BooksDataSource) =
+        @JvmStatic
+        fun getInstance(booksLocalDataSource: BooksDataSource) =
                 INSTANCE ?: synchronized(BooksRepository::class.java) {
                     INSTANCE ?: BooksRepository(booksLocalDataSource)
                             .also { INSTANCE = it }
                 }
 
-
-        /**
-         * Used to force [getInstance] to create a new instance
-         * next time it's called.
-         */
-        @JvmStatic fun destroyInstance() {
+        @JvmStatic
+        fun destroyInstance() {
             INSTANCE = null
         }
     }

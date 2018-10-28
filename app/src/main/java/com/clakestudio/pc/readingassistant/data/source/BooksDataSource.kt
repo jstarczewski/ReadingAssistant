@@ -1,7 +1,6 @@
 package com.clakestudio.pc.readingassistant.data.source
 
 import com.clakestudio.pc.readingassistant.data.Book
-import io.reactivex.Flowable
 
 interface BooksDataSource {
 
