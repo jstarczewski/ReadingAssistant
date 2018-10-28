@@ -13,7 +13,9 @@ class BooksLocalDataSource(val booksDao: BooksDao) : BooksDataSource {
     val allCompositeDisposable: MutableList<Disposable> = arrayListOf()
 
 
-    override fun getBooks(): List<Book> {
+    override fun getBooks(): Flowable<List<Book>> {
+
+        /*
         var books: MutableList<Book> = ArrayList<Book>()
         val disposable = booksDao.getBooks()
                 .subscribeOn(Schedulers.io())
@@ -22,7 +24,12 @@ class BooksLocalDataSource(val booksDao: BooksDao) : BooksDataSource {
                     books = (booksList as MutableList<Book>)
                 }, { t: Throwable? -> t?.printStackTrace() })
         allCompositeDisposable.add(disposable)
-        return books
+        return books*/
+
+        return booksDao.getBooks()
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+
 
     }
 

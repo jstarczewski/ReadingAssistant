@@ -23,6 +23,9 @@ class BooksViewModel(
         var booksRepository = BooksRepository.getInstance(BooksLocalDataSource.getInstance(booksdb.booksDao()))
         booksRepository.saveBook(Book("elo", "twojastara", "je", "12"))
 
-        infoLabel.set(booksRepository.getBooks().toString())
+
+        (booksRepository.getBooks())
+                .subscribe({ books -> infoLabel.set(books.toString())}, { t: Throwable? -> t?.printStackTrace() })
+
     }
 }

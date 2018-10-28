@@ -1,11 +1,12 @@
 package com.clakestudio.pc.readingassistant.data.source
 
 import com.clakestudio.pc.readingassistant.data.Book
+import io.reactivex.Flowable
 
 class BooksRepository(val booksLocalDataSource: BooksDataSource) : BooksDataSource {
 
 
-    override fun getBooks(): List<Book> {
+    override fun getBooks(): Flowable<List<Book>> {
         return booksLocalDataSource.getBooks()
     }
 
