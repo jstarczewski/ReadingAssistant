@@ -9,11 +9,11 @@ import io.reactivex.schedulers.Schedulers
 
 class BooksLocalDataSource(val booksDao: BooksDao) : BooksDataSource {
 
-
+    var cachedBooks: List<Book> = arrayListOf()
     val allCompositeDisposable: MutableList<Disposable> = arrayListOf()
 
 
-    override fun getBooks(): Flowable<List<Book>> {
+    override fun getBooks(): List<Book> {
 
         /*
         var books: MutableList<Book> = ArrayList<Book>()
@@ -26,11 +26,14 @@ class BooksLocalDataSource(val booksDao: BooksDao) : BooksDataSource {
         allCompositeDisposable.add(disposable)
         return books*/
 
-        return booksDao.getBooks()
+
+        val books = booksDao.getBooks()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
+                .subscribe({ books -> cachedBooks = books }, {t: Throwable? -> t?.printStackTrace()})
+        allCompositeDisposable.add(books)
 
-
+        return cachedBooks
     }
 
     private fun transform(books: List<Book>): ArrayList<Book> {

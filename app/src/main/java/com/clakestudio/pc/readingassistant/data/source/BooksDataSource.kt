@@ -5,8 +5,7 @@ import io.reactivex.Flowable
 
 interface BooksDataSource {
 
-
-    fun getBooks() : Flowable<List<Book>>
+    fun getBooks() : List<Book>
 
     fun saveBook(book: Book)
 

@@ -8,6 +8,7 @@ import com.clakestudio.pc.readingassistant.data.Book
 import com.clakestudio.pc.readingassistant.data.source.BooksRepository
 import com.clakestudio.pc.readingassistant.data.source.local.BooksLocalDataSource
 import com.clakestudio.pc.readingassistant.data.source.local.LibraryDatabase
+import io.reactivex.disposables.CompositeDisposable
 
 class BooksViewModel(
         context: Application
@@ -23,9 +24,7 @@ class BooksViewModel(
         var booksRepository = BooksRepository.getInstance(BooksLocalDataSource.getInstance(booksdb.booksDao()))
         booksRepository.saveBook(Book("elo", "twojastara", "je", "12"))
 
-
-        (booksRepository.getBooks())
-                .subscribe({ books -> infoLabel.set(books.toString())}, { t: Throwable? -> t?.printStackTrace() })
+        infoLabel.set(booksRepository.getBooks().toString())
 
     }
 }

@@ -6,7 +6,7 @@ import io.reactivex.Flowable
 class BooksRepository(val booksLocalDataSource: BooksDataSource) : BooksDataSource {
 
 
-    override fun getBooks(): Flowable<List<Book>> {
+    override fun getBooks(): List<Book> {
         return booksLocalDataSource.getBooks()
     }
 
