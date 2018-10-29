@@ -7,10 +7,9 @@ import android.view.ViewGroup
 import com.clakestudio.pc.readingassistant.R
 import com.clakestudio.pc.readingassistant.data.Book
 
-class BooksAdapter(
-        private var books: List<Book>,
-        private val booksViewModel: BooksViewModel
-) : RecyclerView.Adapter<BooksViewHolder>() {
+class BooksAdapter : RecyclerView.Adapter<BooksViewHolder>() {
+
+    private var books: List<Book> = arrayListOf()
 
     /**
      * Currently booksViewModel is not needed right now but, later when integration with
@@ -38,7 +37,7 @@ class BooksAdapter(
         return books.size
     }
 
-    fun setBooksList(books: ArrayList<Book>) {
+    fun setBooks(books: ArrayList<Book>) {
         this.books = books
         notifyDataSetChanged()
     }

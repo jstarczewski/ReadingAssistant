@@ -4,12 +4,15 @@ import android.content.Context
 import android.net.Uri
 import android.os.Bundle
 import android.support.v4.app.Fragment
+import android.support.v7.widget.LinearLayoutManager
+import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 
 import com.clakestudio.pc.readingassistant.R
 import com.clakestudio.pc.readingassistant.databinding.FragmentBooksBinding
+import kotlinx.android.synthetic.main.fragment_books.*
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -29,7 +32,7 @@ class BooksFragment : Fragment() {
     // TODO: Rename and change types of parameters
 
     private lateinit var viewDataBinding: FragmentBooksBinding
-
+    private val recyclerView: RecyclerView = rvBooks as RecyclerView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -41,12 +44,24 @@ class BooksFragment : Fragment() {
         viewDataBinding = FragmentBooksBinding.inflate(inflater, container, false).apply {
             viewmodel = (activity as BooksActivity).obtainViewModel()
         }
+
+        val booksAdapter: BooksAdapter = BooksAdapter()
+        recyclerView.apply {
+            layoutManager = LinearLayoutManager(context)
+            setHasFixedSize(true)
+            adapter = booksAdapter
+
+        }
+
         return viewDataBinding.root
     }
 
     override fun onResume() {
         super.onResume()
         viewDataBinding.viewmodel?.start()
+
+
+
     }
 
     // TODO: Rename method, update argument and hook method into UI event

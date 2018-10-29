@@ -19,14 +19,16 @@ class BooksViewModel(
     private val context: Context = context.applicationContext
 
     val infoLabel = ObservableField<String>()
-    val items: ObservableArrayList<Book> = ObservableArrayList()
+    val books: ObservableArrayList<Book> = ObservableArrayList()
 
     fun start() {
-
+        loadBooks()
     }
 
     fun loadBooks() {
-
+        var books: List<Book> = booksRepository.getBooks()
+        for (book: Book in books)
+            this.books.add(book)
     }
 
     @OnLifecycleEvent(Lifecycle.Event.ON_DESTROY)
