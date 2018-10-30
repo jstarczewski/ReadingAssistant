@@ -4,10 +4,11 @@ import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import com.clakestudio.pc.readingassistant.R
 import com.clakestudio.pc.readingassistant.data.Book
+import com.clakestudio.pc.readingassistant.databinding.BookBinding
+import kotlinx.android.synthetic.main.book.view.*
 
-class BooksAdapter : RecyclerView.Adapter<BooksViewHolder>() {
+class BooksAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     private var books: List<Book> = arrayListOf()
 
@@ -17,19 +18,26 @@ class BooksAdapter : RecyclerView.Adapter<BooksViewHolder>() {
      * and for example open another activity
      * */
 
-    class ViewHolder(val bookItemView: View) : RecyclerView.ViewHolder(bookItemView)
+    class ViewHolder(bookItemView: View) : RecyclerView.ViewHolder(bookItemView)
 
-    override fun onCreateViewHolder(parent: ViewGroup?, viewType: Int): BooksViewHolder {
-        val view = LayoutInflater.from(parent!!.context).inflate(R.layout.book, parent, false) as View
-        return BooksViewHolder(view)
+    override fun onCreateViewHolder(parent: ViewGroup?, viewType: Int): RecyclerView.ViewHolder {
+
+        val binding: BookBinding
+
+        val inflater = LayoutInflater.from(parent!!.context)
+
+        binding = BookBinding.inflate(inflater, parent, false)
+
+        return ViewHolder(binding.root)
     }
 
-    override fun onBindViewHolder(holder: BooksViewHolder?, position: Int) {
+    override fun onBindViewHolder(holder: RecyclerView.ViewHolder?, position: Int) {
         /**
          * holder!! ??
          * */
-
-        holder!!.bind(books[position])
+        holder!!.itemView.tvTitle.text = books[position].title
+        holder.itemView.tvAuthor.text = books[position].author
+        holder.itemView.tvNote.text = books[position].note
 
     }
 
@@ -37,7 +45,9 @@ class BooksAdapter : RecyclerView.Adapter<BooksViewHolder>() {
         return books.size
     }
 
-    fun setBooks(books: ArrayList<Book>) {
+    fun replaceData(books: ArrayList<Book>) = setBooks(books)
+
+    private fun setBooks(books: ArrayList<Book>) {
         this.books = books
         notifyDataSetChanged()
     }

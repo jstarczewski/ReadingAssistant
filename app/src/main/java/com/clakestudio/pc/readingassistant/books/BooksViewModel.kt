@@ -25,7 +25,7 @@ class BooksViewModel(
         loadBooks()
     }
 
-    fun loadBooks() {
+    private fun loadBooks() {
         var books: List<Book> = booksRepository.getBooks()
         for (book: Book in books)
             this.books.add(book)

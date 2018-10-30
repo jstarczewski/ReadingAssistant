@@ -32,7 +32,9 @@ class BooksFragment : Fragment() {
     // TODO: Rename and change types of parameters
 
     private lateinit var viewDataBinding: FragmentBooksBinding
-    private val recyclerView: RecyclerView = rvBooks as RecyclerView
+    val booksAdapter: BooksAdapter = BooksAdapter()
+
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -45,13 +47,13 @@ class BooksFragment : Fragment() {
             viewmodel = (activity as BooksActivity).obtainViewModel()
         }
 
-        val booksAdapter: BooksAdapter = BooksAdapter()
+        /*
         recyclerView.apply {
             layoutManager = LinearLayoutManager(context)
             setHasFixedSize(true)
             adapter = booksAdapter
 
-        }
+        }*/
 
         return viewDataBinding.root
     }
