@@ -13,23 +13,8 @@ class BooksLocalDataSource(private val booksDao: BooksDao) : BooksDataSource {
     // makes testing harder
     val disposableManager: DisposableManager = DisposableManager.getInstance()
 
-    override fun getBooks(): List<Book> {
-
-        var books: MutableList<Book> = mutableListOf()
-
-        val booksDisposable = booksDao.getBooks()
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe({
-                    books.clear()
-                    for (book: Book in it) {
-                        books.add(book)
-                    }
-                    Log.e("List In", books.toString())
-                }
-                        , { t: Throwable? -> t?.printStackTrace() })
-        disposableManager.addDisposable(booksDisposable)
-        return books
+    override fun getBooks(): Flowable<List<Book>> {
+        return booksDao.getBooks()
     }
 
     /*

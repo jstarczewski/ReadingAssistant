@@ -1,6 +1,7 @@
 package com.clakestudio.pc.readingassistant.data.source
 
 import com.clakestudio.pc.readingassistant.data.Book
+import io.reactivex.Flowable
 
 class BooksRepository(private val booksLocalDataSource: BooksDataSource) : BooksDataSource {
 
@@ -18,7 +19,7 @@ class BooksRepository(private val booksLocalDataSource: BooksDataSource) : Books
 
     // TODO("check whether it is better for loadBooks to return value or not")
 
-    override fun getBooks(): List<Book> {
+    override fun getBooks(): Flowable<List<Book>> {
         return booksLocalDataSource.getBooks()
     }
 

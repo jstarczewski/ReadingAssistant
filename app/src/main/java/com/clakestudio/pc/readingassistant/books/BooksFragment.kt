@@ -34,11 +34,6 @@ class BooksFragment : Fragment() {
     private lateinit var viewDataBinding: FragmentBooksBinding
     private lateinit var booksAdapter: BooksAdapter
 
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-    }
-
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
         // Inflate the layout for this fragment
@@ -71,27 +66,16 @@ class BooksFragment : Fragment() {
                 viewDataBinding.rvBooks.adapter = booksAdapter
             }
         }
-
     }
+
+
 
     override fun onResume() {
         super.onResume()
         viewDataBinding.viewmodel?.start()
-
-
     }
 
-    // TODO: Rename method, update argument and hook method into UI event
-    fun onButtonPressed(uri: Uri) {
-    }
 
-    override fun onAttach(context: Context) {
-        super.onAttach(context)
-    }
-
-    override fun onDetach() {
-        super.onDetach()
-    }
 
     /**
      * This interface must be implemented by activities that contain this

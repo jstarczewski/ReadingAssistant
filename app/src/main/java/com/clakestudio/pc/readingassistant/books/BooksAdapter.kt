@@ -17,7 +17,7 @@ class BooksAdapter(private var books: ArrayList<Book>,
      * and for example open another activity
      * */
 
-    class ViewHolder(val binding: BookBinding) : RecyclerView.ViewHolder(binding.root) {
+    class ViewHolder(private val binding: BookBinding) : RecyclerView.ViewHolder(binding.root) {
 
         fun bind(title: String, author: String, note: String) {
             binding.tvTitle.text = title
