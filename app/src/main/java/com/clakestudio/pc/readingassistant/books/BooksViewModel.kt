@@ -22,20 +22,20 @@ class BooksViewModel(
     val books: ObservableArrayList<Book> = ObservableArrayList()
 
     fun start() {
+        booksRepository.saveBook(Book("ealo", "dziala", "czy nie dziala", "112"))
         loadBooks()
     }
 
     private fun loadBooks() {
 
 
-        var books: List<Book> = booksRepository.getBooks()
-        for (book: Book in books)
+        var bookss: List<Book> = booksRepository.getBooks()
+        for (book: Book in bookss)
             this.books.add(book)
     }
 
     @OnLifecycleEvent(Lifecycle.Event.ON_DESTROY)
     fun unsubscribeViewModel() {
-        DisposableManager.getInstance().clearDisposables()
     }
 
 }

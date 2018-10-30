@@ -19,17 +19,11 @@ class BooksRepository(private val booksLocalDataSource: BooksDataSource) : Books
     // TODO("check whether it is better for loadBooks to return value or not")
 
     override fun getBooks(): List<Book> {
-        if (cachedBooks.isNotEmpty() && !cacheIsDirty) {
-            return cachedBooks
-        }
-        if (cacheIsDirty || cachedBooks.isEmpty())
-            loadBooks()
-        return cachedBooks
+        return booksLocalDataSource.getBooks()
     }
 
 
     override fun saveBook(book: Book) {
-        cachedBooks.add(book)
         booksLocalDataSource.saveBook(book)
     }
 

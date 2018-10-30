@@ -1,5 +1,6 @@
 package com.clakestudio.pc.readingassistant.data.source.local
 
+import android.util.Log
 import com.clakestudio.pc.readingassistant.data.Book
 import com.clakestudio.pc.readingassistant.data.source.BooksDataSource
 import com.clakestudio.pc.readingassistant.util.DisposableManager
@@ -14,12 +15,19 @@ class BooksLocalDataSource(private val booksDao: BooksDao) : BooksDataSource {
 
     override fun getBooks(): List<Book> {
 
-        var books: List<Book> = ArrayList()
+        var books: MutableList<Book> = mutableListOf()
 
         val booksDisposable = booksDao.getBooks()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe({ list -> books = list }, { t: Throwable? -> t?.printStackTrace() })
+                .subscribe({
+                    books.clear()
+                    for (book: Book in it) {
+                        books.add(book)
+                    }
+                    Log.e("List In", books.toString())
+                }
+                        , { t: Throwable? -> t?.printStackTrace() })
         disposableManager.addDisposable(booksDisposable)
         return books
     }
@@ -31,12 +39,15 @@ allCompositeDisposable.add(books)
 }
 */
     override fun saveBook(book: Book) {
+
+
+        Log.e("List", book.toString())
+
         disposableManager.addDisposable(
                 Flowable.fromCallable { booksDao.insertBook(book) }
                         .subscribeOn(Schedulers.io())
-                        .observeOn(Schedulers.io())
-                        .subscribe()
-        )
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribe())
     }
 
     companion object {
