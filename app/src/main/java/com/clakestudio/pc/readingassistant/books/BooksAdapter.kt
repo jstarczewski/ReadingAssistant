@@ -8,9 +8,10 @@ import com.clakestudio.pc.readingassistant.data.Book
 import com.clakestudio.pc.readingassistant.databinding.BookBinding
 import kotlinx.android.synthetic.main.book.view.*
 
-class BooksAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+class BooksAdapter(private var books: ArrayList<Book>,
+                   private val booksViewModel: BooksViewModel
+) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
-    private var books: List<Book> = arrayListOf()
 
     /**
      * Currently booksViewModel is not needed right now but, later when integration with
@@ -18,7 +19,13 @@ class BooksAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
      * and for example open another activity
      * */
 
-    class ViewHolder(bookItemView: View) : RecyclerView.ViewHolder(bookItemView)
+    class ViewHolder(bookItemView: View) : RecyclerView.ViewHolder(bookItemView) {
+
+        var title = bookItemView.tvTitle
+        val tvAuthor = bookItemView.tvAuthor
+        val tvNote = bookItemView.tvNote
+
+    }
 
     override fun onCreateViewHolder(parent: ViewGroup?, viewType: Int): RecyclerView.ViewHolder {
 

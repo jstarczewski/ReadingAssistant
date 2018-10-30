@@ -22,10 +22,13 @@ class BooksViewModel(
     val books: ObservableArrayList<Book> = ObservableArrayList()
 
     fun start() {
+        booksRepository.saveBook(Book("elo", "dziala", "czy nie dziala", "12"))
         loadBooks()
     }
 
     private fun loadBooks() {
+
+
         var books: List<Book> = booksRepository.getBooks()
         for (book: Book in books)
             this.books.add(book)

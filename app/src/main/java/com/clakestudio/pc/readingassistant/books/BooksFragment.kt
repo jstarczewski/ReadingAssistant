@@ -32,8 +32,7 @@ class BooksFragment : Fragment() {
     // TODO: Rename and change types of parameters
 
     private lateinit var viewDataBinding: FragmentBooksBinding
-    val booksAdapter: BooksAdapter = BooksAdapter()
-
+    private lateinit var booksAdapter: BooksAdapter
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -55,13 +54,29 @@ class BooksFragment : Fragment() {
 
         }*/
 
+
+
         return viewDataBinding.root
+    }
+
+    override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        val viewModel = viewDataBinding.viewmodel
+        if (viewModel != null) {
+            booksAdapter = BooksAdapter(ArrayList(0), viewModel)
+            viewDataBinding.rvBooks.apply {
+                layoutManager = LinearLayoutManager(context)
+                setHasFixedSize(true)
+                viewDataBinding.rvBooks.adapter = booksAdapter
+            }
+        }
+
     }
 
     override fun onResume() {
         super.onResume()
         viewDataBinding.viewmodel?.start()
-
 
 
     }
