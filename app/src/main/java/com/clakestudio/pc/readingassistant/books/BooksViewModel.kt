@@ -44,7 +44,6 @@ class BooksViewModel(
     }
 
     @OnLifecycleEvent(Lifecycle.Event.ON_RESUME)
-    fun start() {
-        loadBooks()
-    }
+    fun start() = loadBooks()
+
 }
