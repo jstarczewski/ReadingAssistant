@@ -5,8 +5,8 @@ import io.reactivex.Flowable
 
 class BooksRepository(private val booksLocalDataSource: BooksDataSource) : BooksDataSource {
 
-    var cachedBooks: ArrayList<Book> = arrayListOf()
-    var cacheIsDirty = false
+    private var cachedBooks: ArrayList<Book> = arrayListOf()
+    private var cacheIsDirty = false
 
     /**
      * 1. If cachedBooks are not empty && are not dirty we just return them
@@ -17,12 +17,9 @@ class BooksRepository(private val booksLocalDataSource: BooksDataSource) : Books
      * */
 
 
-    // TODO("check whether it is better for loadBooks to return value or not")
-
     override fun getBooks(): Flowable<List<Book>> {
         return booksLocalDataSource.getBooks()
     }
-
 
     override fun saveBook(book: Book) {
         booksLocalDataSource.saveBook(book)
@@ -44,10 +41,6 @@ class BooksRepository(private val booksLocalDataSource: BooksDataSource) : Books
                             .also { INSTANCE = it }
                 }
 
-        @JvmStatic
-        fun destroyInstance() {
-            INSTANCE = null
-        }
     }
 
 }
