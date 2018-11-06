@@ -19,6 +19,7 @@ class BooksViewModel(
 
     private var compositeDisposable: CompositeDisposable = CompositeDisposable()
     private val books: ObservableArrayList<Book> = ObservableArrayList()
+    val snackbarMessage = SingleLiveEvent<Int>()
 
     private fun loadBooks() {
 
