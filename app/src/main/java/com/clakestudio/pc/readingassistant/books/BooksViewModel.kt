@@ -17,8 +17,8 @@ class BooksViewModel(
         private val booksRepository: BooksRepository
 ) : AndroidViewModel(context) {
 
-    private val books: ObservableArrayList<Book> = ObservableArrayList()
     private var compositeDisposable: CompositeDisposable = CompositeDisposable()
+    private val books: ObservableArrayList<Book> = ObservableArrayList()
 
     private fun loadBooks() {
 
