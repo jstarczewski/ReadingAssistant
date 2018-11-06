@@ -1,12 +1,14 @@
 package com.clakestudio.pc.readingassistant.books
 
 import android.os.Bundle
+import android.support.design.widget.Snackbar
 import android.support.v4.app.Fragment
 import android.support.v7.widget.LinearLayoutManager
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.clakestudio.pc.readingassistant.databinding.FragmentBooksBinding
+import com.clakestudio.pc.readingassistant.util.setUpSnackbar
 
 class BooksFragment : Fragment() {
 
@@ -33,6 +35,13 @@ class BooksFragment : Fragment() {
                 setHasFixedSize(true)
                 viewDataBinding.rvBooks.adapter = booksAdapter
             }
+        }
+    }
+
+    override fun onActivityCreated(savedInstanceState: Bundle?) {
+        super.onActivityCreated(savedInstanceState)
+        viewDataBinding.viewmodel?.let {
+            view?.setUpSnackbar(this, it.snackbarMessage, Snackbar.LENGTH_LONG)
         }
     }
 

@@ -6,6 +6,8 @@ import android.arch.lifecycle.Lifecycle
 import android.arch.lifecycle.OnLifecycleEvent
 import android.databinding.ObservableArrayList
 import android.util.Log
+import com.clakestudio.pc.readingassistant.R
+import com.clakestudio.pc.readingassistant.SingleLiveEvent
 import com.clakestudio.pc.readingassistant.data.Book
 import com.clakestudio.pc.readingassistant.data.source.BooksRepository
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -18,8 +20,8 @@ class BooksViewModel(
 ) : AndroidViewModel(context) {
 
     private var compositeDisposable: CompositeDisposable = CompositeDisposable()
-    private val books: ObservableArrayList<Book> = ObservableArrayList()
-    val snackbarMessage = SingleLiveEvent<Int>()
+    val books: ObservableArrayList<Book> = ObservableArrayList()
+    val snackbarMessage = SingleLiveEvent<String>()
 
     private fun loadBooks() {
 
@@ -34,9 +36,10 @@ class BooksViewModel(
                     this.books.clear()
                     this.books.addAll(it)
                     loadBooks()
-                },
-                        { t: Throwable -> t.printStackTrace() })
+                }, //{ t: Throwable -> t.printStackTrace() })
+                        {error -> this.showSnackbarMessage(error.localizedMessage)})
         compositeDisposable.add(disposable)
+
     }
 
     @OnLifecycleEvent(Lifecycle.Event.ON_DESTROY)
@@ -47,4 +50,7 @@ class BooksViewModel(
     @OnLifecycleEvent(Lifecycle.Event.ON_RESUME)
     fun start() = loadBooks()
 
+    private fun showSnackbarMessage(snackbarMessage: String) {
+        this.snackbarMessage.value = snackbarMessage
+    }
 }
