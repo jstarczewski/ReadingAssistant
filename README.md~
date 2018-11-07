@@ -10,5 +10,3 @@ This is the v2 (2018) version of BookUp (Reading Assistant). Both apps will have
 * implment RecyclerView in Kotlin
 * work with RxJava Kotlin (background work)
 * test Android Apps both with Mockito+Expresso and JUnit
-
-

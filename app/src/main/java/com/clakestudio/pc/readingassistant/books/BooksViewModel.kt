@@ -38,7 +38,7 @@ class BooksViewModel(
                     this.books.addAll(it)
                     loadBooks()
                 }, //{ t: Throwable -> t.printStackTrace() })
-                        {error -> this.showSnackbarMessage(error.localizedMessage)})
+                        { error -> this.showSnackbarMessage(error.localizedMessage) })
         compositeDisposable.add(disposable)
 
     }
