@@ -22,6 +22,7 @@ class BooksViewModel(
     private var compositeDisposable: CompositeDisposable = CompositeDisposable()
     val books: ObservableArrayList<Book> = ObservableArrayList()
     val snackbarMessage = SingleLiveEvent<String>()
+    val newTaskEvent = SingleLiveEvent<Void>()
 
     private fun loadBooks() {
 
@@ -52,5 +53,9 @@ class BooksViewModel(
 
     private fun showSnackbarMessage(snackbarMessage: String) {
         this.snackbarMessage.value = snackbarMessage
+    }
+
+    fun addNewBook() {
+        newTaskEvent.call()
     }
 }
