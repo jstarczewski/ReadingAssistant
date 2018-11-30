@@ -15,3 +15,6 @@ This is the v2 (2018) version of BookUp (Reading Assistant). Both apps will have
 * implement rest of funcionalities
 * create tests
 * review patterns used during development find what I can do better
+
+## Now 
+The development of the app is now paused due to another project I need to do, this app will serve as a project to learn application testing in Android.
